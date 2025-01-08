@@ -68,6 +68,6 @@ stages {
         sleep 10
         echo "Train Sorti. "
       }
-    }    
+    }
   }
 }
