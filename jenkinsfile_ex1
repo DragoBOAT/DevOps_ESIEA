@@ -1,8 +1,9 @@
 pipeline {
     /* I am a comment */
-    agent any
+    agent any //who launches pipeline
 
-    stages {
+// All steps to build a CI/CD
+    stages { 
         stage('HELLO') {
             steps {
                 echo 'Hello World'
