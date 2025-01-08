@@ -1,85 +1,97 @@
 pipeline {
-agent any
-stages:          // List of stages for jobs, and their order of execution
+agent any 
+/* stages:          // List of stages for jobs, and their order of execution
   - build
   - test
-  - deploy
+  - deploy */ 
 
-check-de-la-coque:       // This job runs in the build stage, which runs first.
-  stage: build
-  script:
-    - echo "Checking de la coque"
-    - sleep 10
-    - echo "Integrité de la coque à 100%"
+// This job runs in the build stage, which runs first.
+stages {
+  stage('build') {
+      steps {
+          script { // Check de la coque
+             echo "Checking de la coque"
+             sleep 10 
+             echo "Integrite de la coque a 100%"
+          }
+      }
+      steps { // Verification carburant
+        script {
+          echo "Verification du niveau de carburant"
+          sleep 10
+          echo "Réservoir rempli à 74%"
+        }
+      }
+      environment('production'){
+        steps { // Verification propulseur
+          script {
+            echo "Verification de l'integrite des propulseurs."
+            sleep 10
+            echo "Propuleseurs intactes"
+          }
+        }
+      }
+  }
 
-verification-electronique:   // This job runs in the test stage.
-  stage: test    // It only starts when the job in the build stage completes successfully.
-  script:
-    - echo "Verification des systemes l'electroniques"
-    - sleep 10
-    - echo "Integrite du systeme electronique à 100%"
-
-verification-carburant:   // This job also runs in the test stage.
-  stage: build    // It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Verification du niveau de carburant"
-    - sleep 10
-    - echo "Réservoir rempli à 74%"
-
-verification-propulseur:      // This job runs in the deploy stage.
-  stage: build  // It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
-  script:
-    - echo "Verification de l'integrite des propulseurs."
-    - sleep 10
-    - echo "Propuleseurs intactes"
-
-verification-equipement-nav:   // This job also runs in the test stage.
-  stage: test    // It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Verification des équipement de navigation"
-    - sleep 10
-    - echo "Léger disfonctionnement de la carte numerique"    
-
-verification-equipement-sec:   // This job also runs in the test stage.
-  stage: deploy   // It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Verification de l'integrite des equipements de secours"
-    - sleep 10
-    - echo "Equipements de secours ok"        
-
-verification-communication:   // This job also runs in the test stage.
-  stage: deploy    // It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Verification des equipements de communication"
-    - sleep 10
-    - echo "Test radio ok. "    
-
-verification-vitesse:   // This job also runs in the test stage.
-  stage: test    // It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Verification de la vitesse"
-    - sleep 15
-    - echo "Test de vitesse ok. "    
-
-verification-trajectoire:   // This job also runs in the test stage.
-  stage: test    // It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Verification de la trajectoire"
-    - sleep 10
-    - echo "trajectoire ok. "    
-
-verification-altitude:   // This job also runs in the test stage.
-  stage: test    // It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Verification de l'altitude"
-    - sleep 10
-    - echo "Test altitude ok. "    
-
-verification-train:   // This job also runs in the test stage.
-  stage: deploy    // It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Verification du déploiement du train d'atterissage"
-    - sleep 10
-    - echo "Train sorti. "    
+  stage('test'){ 
+    steps { // Verification Electronique
+      script {
+        echo "Verification des systemes l'electroniques"
+        sleep 10
+        echo "Integrite du systeme electronique à 100"
+      }
+    }
+    steps {
+      script { // Verification Equipement Nav
+        echo "Verification des équipement de navigation"
+        sleep 10
+        echo "Léger disfonctionnement de la carte numerique"
+      }
+    }
+    steps { // Verification Vitesse
+      script {
+        echo "Verification de la vitesse"
+        sleep 10
+        echo "Test de Vitesse OK. "
+      }
+    }
+    steps { // Verification Trajectoire
+      script {
+        echo "Verification de la Trajectoire"
+        sleep 10
+        echo "Trajectoire OK. "
+      }
+    }
+    steps { // Verification Altitude
+      script {
+        echo "Verification de l'altitude"
+        sleep 10
+        echo "Test Altitude OK. "
+      }
+    }
+  } 
+  
+  stage('deploy'){ 
+    steps { // Verification Equipement Sec
+      script {
+        echo "Verification de l'integrite des equipements de secours"
+        sleep 10
+        echo "Equipements de secours ok"
+      }
+    }
+    steps { // Verification Communication
+      script {
+        echo "Verficiation des Equipements de Communication"
+        sleep 10
+        echo "Test Radio OK. "
+      }
+    }
+    steps { // Verification Train
+      script {
+        echo "Verification du déploiement du train d'atterissage"
+        sleep 10
+        echo "Train Sorti. "
+      }
+    }
+  }    
 }
