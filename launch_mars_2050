@@ -8,29 +8,23 @@ agent any
 // This job runs in the build stage, which runs first.
 stages {
   stage('build') {
-      steps {
-          script { // Check de la coque
-             echo "Checking de la coque"
-             sleep 10 
-             echo "Integrite de la coque a 100%"
-          }
-      }
-      steps { // Verification carburant
-        script {
-          echo "Verification du niveau de carburant"
+    steps {
+      script { // Check de la coque
+        echo "Checking de la coque"
+        sleep 10 
+        echo "Integrite de la coque a 100%"
+        sleep 3 // Verification carburant
+        echo "Verification du niveau de carburant"
+        sleep 10
+        echo "Réservoir rempli à 74%"
+        environment('production') {
+          sleep 3  // Verification propulseur
+          echo "Verification de l'integrite des propulseurs."
           sleep 10
-          echo "Réservoir rempli à 74%"
+          echo "Propulseurs intactes"
         }
       }
-      environment('production'){
-        steps { // Verification propulseur
-          script {
-            echo "Verification de l'integrite des propulseurs."
-            sleep 10
-            echo "Propuleseurs intactes"
-          }
-        }
-      }
+    }
   }
 
   stage('test'){ 
@@ -39,60 +33,41 @@ stages {
         echo "Verification des systemes l'electroniques"
         sleep 10
         echo "Integrite du systeme electronique à 100"
-      }
-    }
-    steps {
-      script { // Verification Equipement Nav
+        sleep 3 // Verification Equipement Nav
         echo "Verification des équipement de navigation"
         sleep 10
         echo "Léger disfonctionnement de la carte numerique"
-      }
-    }
-    steps { // Verification Vitesse
-      script {
+        sleep 3 // Verification Vitesse
         echo "Verification de la vitesse"
         sleep 10
         echo "Test de Vitesse OK. "
-      }
-    }
-    steps { // Verification Trajectoire
-      script {
+        sleep 3 // // Verification Trajectoire
         echo "Verification de la Trajectoire"
         sleep 10
         echo "Trajectoire OK. "
-      }
-    }
-    steps { // Verification Altitude
-      script {
+        sleep 3 // Verification Altitude
         echo "Verification de l'altitude"
         sleep 10
         echo "Test Altitude OK. "
       }
     }
-  } 
-  
+  }
+
   stage('deploy'){ 
     steps { // Verification Equipement Sec
       script {
         echo "Verification de l'integrite des equipements de secours"
         sleep 10
         echo "Equipements de secours ok"
-      }
-    }
-    steps { // Verification Communication
-      script {
+        sleep 3 // Verification Communication
         echo "Verficiation des Equipements de Communication"
         sleep 10
         echo "Test Radio OK. "
-      }
-    }
-    steps { // Verification Train
-      script {
+        sleep 3 // Verification Train
         echo "Verification du déploiement du train d'atterissage"
         sleep 10
         echo "Train Sorti. "
       }
-    }
-  }    
-}
+    }    
+  }
 }
