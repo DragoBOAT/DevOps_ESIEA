@@ -96,8 +96,8 @@ pipeline {
                         "December": "Breathe Consciously",
                     ]
 
-                    def currentGoals = user_stories["${env.MONTH}"]
-                    def currentEpic = epics["${env.MONTH}"]
+                    def currentGoals = user_stories[${env.MONTH}]
+                    def currentEpic = epics[${env.MONTH}]
                     def selectedGoal = ""
 
                     /*// Objectives based on the date 
@@ -139,7 +139,7 @@ pipeline {
             when {
                 expression {
                     // Only if on the last week of the month
-                    ${env.DAY >=25}
+                    env.DAY >=25
                 }
             }
             steps {
