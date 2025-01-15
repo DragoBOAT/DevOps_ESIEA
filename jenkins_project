@@ -139,20 +139,20 @@ pipeline {
             when {
                 expression {
                     // Only if on the last week of the month
-                    DAY >=25
+                    ${env.DAY >=25}
                 }
             }
             steps {
                 script {
-                    //echo "We're ending ${MONTH}. Quick reminder of your Month Final Goal : ${env.MONTHLY_EPIC} !"
-                    echo "We're ending MONTH. Quick reminder of your Month Final Goal : MONTHLY_EPIC !"
+                    echo "We're ending ${env.MONTH}. Quick reminder of your Month Final Goal : ${env.MONTHLY_EPIC} !"
+                    //echo "We're ending MONTH. Quick reminder of your Month Final Goal : MONTHLY_EPIC !"
                 }
             }
         } 
 
         stage ('SUCCESSFUL'){
             steps {
-                echo "Pipeline ended for the MONTH." //{$MONTH}
+                echo "Pipeline ended for the ${env.MONTH}." 
             }
         }       
     }   
