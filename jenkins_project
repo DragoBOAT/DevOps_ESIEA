@@ -7,8 +7,8 @@ pipeline {
                 script {
                     // Collect month and day 
                     def now = new Date()
-                    MONTH = new Date().format('MMMM', TimeZone.getTimeZone('UTC'))
-                    DAY = new Date().format('dd', TimeZone.getTimeZone('UTC')) as Integer
+                    env.MONTH = new Date().format('MMMM', TimeZone.getTimeZone('UTC'))
+                    env.DAY = new Date().format('dd', TimeZone.getTimeZone('UTC')) as Integer
                     
                     echo 'Current Date : ${env.DAY} ${env.MONTH}'
                 }
@@ -96,32 +96,33 @@ pipeline {
                         "December": "Breathe Consciously",
                     ]
 
-                    def currentGoals = user_stories[MONTH]
-                    def currentEpic = epics[MONTH]
+                    def currentGoals = user_stories["${env.MONTH}"]
+                    def currentEpic = epics["${env.MONTH}"]
                     def selectedGoal = ""
 
                     // Objectives based on the date 
                     // ISSUE MIGHT BE THERE
-                    if (DAY >= 1 && DAY <=10){
+                    if ("${env.DAY}" >= 1 && "${env.DAY}" <=10){
                         echo "Between 1 and 10"
                         //selectedGoal = currentGoals[0]
-                    } else if (DAY >=11 && DAY <= 20){
+                    } else if ("${env.DAY}" >=11 && "${env.DAY}" <= 20){
                         echo "Between 11 and 20"
                         selectedGoal = currentGoals[1]
-                    } else if (DAY >= 21){
+                    } else if ("${env.DAY}" >= 21){
                         echo "Over 21"
                         selectedGoal = currentGoals[2]
                     }
                     /*
                     // Details 
-                    echo "Current Month : ${MONTH}"
-                    echo "Current Day : ${DAY}"
+                    echo "Current Month : "${env.MONTH}""
+                    echo "Current Day : "${env.DAY}"""
                     echo "Short Goal for this period : ${selectedGoal}"
                     echo "Final Goal of the Month : ${currentEpic}"
 
                     // Sve the goal for next steps
                     env.SELECTED_GOAL = selectedGoal
-                    env.MONTHLY_EPIC = currentEpic*/
+                    env.MONTHLY_EPIC = currentEpic
+                    */
                 }
             }
         }
