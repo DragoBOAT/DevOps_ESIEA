@@ -138,17 +138,16 @@ pipeline {
         stage('MONTHLY SUMMARY') {
             when {
                 expression {
-                    // Only if on the last week of the month
-                    env.DAY >=25
+                    return env.DAY.toInteger() >= 25
                 }
             }
             steps {
                 script {
                     echo "We're ending ${env.MONTH}. Quick reminder of your Month Final Goal : ${env.MONTHLY_EPIC} !"
-                    //echo "We're ending MONTH. Quick reminder of your Month Final Goal : MONTHLY_EPIC !"
                 }
             }
-        } 
+        }
+ 
 
         stage ('SUCCESSFUL'){
             steps {
