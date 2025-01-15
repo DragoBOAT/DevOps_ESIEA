@@ -114,10 +114,10 @@ pipeline {
                     }*/
                     
                     // Details 
-                    echo "Current Month : "${env.MONTH}""
-                    echo "Current Day : "${env.DAY}""
-                    echo "Short Goal for this period : "${selectedGoal}""
-                    echo "Final Goal of the Month : "${currentEpic}""
+                    echo "Current Month : ${env.MONTH}"
+                    echo "Current Day : ${env.DAY}"
+                    echo "Short Goal for this period : ${selectedGoal}"
+                    echo "Final Goal of the Month : ${currentEpic}"
 
                     // Sve the goal for next steps
                     env.SELECTED_GOAL = selectedGoal
@@ -157,4 +157,3 @@ pipeline {
         }       
     }   
 }
-
