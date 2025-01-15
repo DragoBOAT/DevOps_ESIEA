@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment{
-        MONT = "{new Date().format('MMMM', TimeZone.getTimeZone('UTC))}"
+        MONTH = "{new Date().format('MMMM', TimeZone.getTimeZone('UTC))}"
         DAY = "{new Date().format('dd', TimeZone.getTimeZone('UTC')) as Integer}"
     }
     stages {
