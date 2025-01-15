@@ -1,1 +1,35 @@
+pipeline {
+    agent any
 
+    stages {
+        stage('BUILD') {
+            steps {
+                script {
+                    echo "Building... Preparation of needed files..."
+                    sleep 5
+                    echo "Project compilation..."
+                }
+            }
+        }
+
+        stage('TEST') {
+            steps {
+                script {
+                    echo "Tests : Check of mensual goals"
+                    sleep 5
+                    echo "Test : Notification for January"
+                }
+            }
+        }
+
+        stage('DEPLOY') {
+            steps {
+                script {
+                    echo "Deployment : Deploy simulation"
+                    sleep 5
+                    echo "Application deployed successfully."
+                }
+            }
+        } 
+    }
+}
