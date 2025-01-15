@@ -5,9 +5,8 @@ agent any
   - test
   - deploy */ 
 
-// This job runs in the build stage, which runs first.
 stages {
-  stage('build') {
+  stage('BUILD') {
     steps {
       script { // Check de la coque
         echo "Checking de la coque"
@@ -17,21 +16,21 @@ stages {
         echo "Verification du niveau de carburant"
         sleep 10
         echo "Réservoir rempli à 74%"
-        environment {ENV_STAGE = 'Production'}
-          script{
-            echo "Environnement : ${ENV_STAGE}"
-            sleep 3  // Verification propulseur
-            echo "Verification de l'integrite des propulseurs."
-            sleep 10
-            echo "Propulseurs intactes"
-          }
+        withEnv(['ENV_STAGE=Production']){
+          echo "Environnement : ${env.ENV_STAGE}"
+          sleep 3  // Verification propulseur
+          echo "Verification de l'integrite des propulseurs."
+          sleep 10
+          echo "Propulseurs intactes"
+        }   
       }
     }
   }
 
-  stage('test'){ 
-    steps { // Verification Electronique
+  stage('TEST'){ 
+    steps { 
       script {
+        sleep 1 // Verification Electronique
         echo "Verification des systemes l'electroniques"
         sleep 10
         echo "Integrite du systeme electronique à 100"
@@ -55,9 +54,10 @@ stages {
     }
   }
 
-  stage('deploy'){ 
-    steps { // Verification Equipement Sec
+  stage('DEPLOY'){ 
+    steps { 
       script {
+        sleep 1 // Verification Equipement Sec 
         echo "Verification de l'integrite des equipements de secours"
         sleep 10
         echo "Equipements de secours ok"
