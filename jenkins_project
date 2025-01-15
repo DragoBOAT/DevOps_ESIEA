@@ -100,7 +100,7 @@ pipeline {
                     def currentEpic = epics["${env.MONTH}"]
                     def selectedGoal = ""
 
-                    // Objectives based on the date 
+                    /*// Objectives based on the date 
                     // ISSUE MIGHT BE THERE
                     if ("${env.DAY}" >= 1 && "${env.DAY}" <=10){
                         echo "Between 1 and 10 "${currentGoals[0]}""
@@ -111,18 +111,18 @@ pipeline {
                     } else if ("${env.DAY}" >= 21){
                         echo "Over 21 "${currentGoals[2]}""
                         //selectedGoal = currentGoals[2]
-                    }
-                    /*
+                    }*/
+                    
                     // Details 
                     echo "Current Month : "${env.MONTH}""
-                    echo "Current Day : "${env.DAY}"""
-                    echo "Short Goal for this period : ${selectedGoal}"
-                    echo "Final Goal of the Month : ${currentEpic}"
+                    echo "Current Day : "${env.DAY}""
+                    echo "Short Goal for this period : "${selectedGoal}""
+                    echo "Final Goal of the Month : "${currentEpic}""
 
                     // Sve the goal for next steps
                     env.SELECTED_GOAL = selectedGoal
                     env.MONTHLY_EPIC = currentEpic
-                    */
+                    
                 }
             }
         }
@@ -157,3 +157,4 @@ pipeline {
         }       
     }   
 }
+
