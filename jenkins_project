@@ -96,8 +96,8 @@ pipeline {
                         "December": "Breathe Consciously",
                     ]
 
-                    /*def currentGoals = user_stories[MONTH]
-                    def currentEpic = epics[MONTH]
+                    def currentGoals = user_stories[MONTH]
+                    /*def currentEpic = epics[MONTH]
                     def selectedGoal = ""
 
                     // Objectives based on the date 
