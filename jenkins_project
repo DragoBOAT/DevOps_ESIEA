@@ -97,7 +97,7 @@ pipeline {
                     ]
 
                     def currentGoals = user_stories[MONTH]
-                    /*def currentEpic = epics[MONTH]
+                    def currentEpic = epics[MONTH]
                     def selectedGoal = ""
 
                     // Objectives based on the date 
@@ -109,7 +109,7 @@ pipeline {
                         selectedGoal = currentGoals[2]
                     }
 
-                    // Details 
+                    /*// Details 
                     echo "Current Month : ${MONTH}"
                     echo "Current Day : ${DAY}"
                     echo "Short Goal for this period : ${selectedGoal}"
