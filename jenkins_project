@@ -100,15 +100,19 @@ pipeline {
                     def currentEpic = epics[MONTH]
                     def selectedGoal = ""
 
-                    /*// Objectives based on the date 
+                    // Objectives based on the date 
+                    // ISSUE MIGHT BE THERE
                     if (DAY >= 1 && DAY <=10){
-                        selectedGoal = currentGoals[0]
+                        echo "Between 1 and 10"
+                        //selectedGoal = currentGoals[0]
                     } else if (DAY >=11 && DAY <= 20){
-                        selectedGoal = currentGoals[1]
+                        echo "Between 11 and 20"
+                        //selectedGoal = currentGoals[1]
                     } else if (DAY >= 21){
-                        selectedGoal = currentGoals[2]
+                        echo "Over 21"
+                        //selectedGoal = currentGoals[2]
                     }
-
+                    /*
                     // Details 
                     echo "Current Month : ${MONTH}"
                     echo "Current Day : ${DAY}"
