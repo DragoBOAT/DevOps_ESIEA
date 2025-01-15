@@ -4,18 +4,21 @@ pipeline {
     stages {
         stage ('SETUP'){
             steps {
-                script { 
-                    def now = new Date()
+                script {
+                    // Collect month and day 
+                    /*def now = new Date()
                     MONTH = new Date().format('MMMM', TimeZone.getTimeZone('UTC'))
                     DAY = new Date().format('dd', TimeZone.getTimeZone('UTC')) as Integer
-
-                    echo 'Current Date : ${env.DAY} ${env.MONTH}' 
+                    
+                    echo 'Current Date : ${env.DAY} ${env.MONTH}'*/
+                    echo 'Current Date : DAY / MONTH' 
                 }
             }
         }
         stage('MONTHLY GOALS') {
             steps {
                 script {
+                    // Def goals for each month
                     def user_stories = [
                         "January" : [
                             "Buy a Diary if it's not already the case.",
@@ -94,10 +97,11 @@ pipeline {
                         "December": "Breathe Consciously",
                     ]
 
-                    def currentGoals = user_stories[MONTH]
+                    /*def currentGoals = user_stories[MONTH]
                     def currentEpic = epics[MONTH]
                     def selectedGoal = ""
 
+                    // Objectives based on the date 
                     if (DAY >= 1 && DAY <=10){
                         selectedGoal = currentGoals[0]
                     } else if (DAY >=11 && DAY <= 20){
@@ -106,13 +110,15 @@ pipeline {
                         selectedGoal = currentGoals[2]
                     }
 
+                    // Details 
                     echo "Current Month : ${MONTH}"
                     echo "Current Day : ${DAY}"
                     echo "Short Goal for this period : ${selectedGoal}"
                     echo "Final Goal of the Month : ${currentEpic}"
 
+                    // Sve the goal for next steps
                     env.SELECTED_GOAL = selectedGoal
-                    env.MONTHLY_EPIC = currentEpic
+                    env.MONTHLY_EPIC = currentEpic*/
                 }
             }
         }
@@ -134,14 +140,15 @@ pipeline {
             }
             steps {
                 script {
-                    echo "We're ending ${MONTH}. Quick reminder of your Month Final Goal : ${env.MONTHLY_EPIC} !"
+                    //echo "We're ending ${MONTH}. Quick reminder of your Month Final Goal : ${env.MONTHLY_EPIC} !"
+                    echo "We're ending MONTH. Quick reminder of your Month Final Goal : MONTHLY_EPIC !"
                 }
             }
         } 
 
         stage ('SUCCESSFUL'){
             steps {
-                echo "Pipeline ended for the ${MONTH}."
+                echo "Pipeline ended for the MONTH." //{$MONTH}
             }
         }       
     }   
