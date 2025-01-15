@@ -17,12 +17,14 @@ stages {
         echo "Verification du niveau de carburant"
         sleep 10
         echo "Réservoir rempli à 74%"
-        //environment('production') {
-          sleep 3  // Verification propulseur
-          echo "Verification de l'integrite des propulseurs."
-          sleep 10
-          echo "Propulseurs intactes"
-        //}
+        environment {ENV_STAGE = 'Production'}
+          script{
+            echo "Environnement : ${ENV_STAGE}"
+            sleep 3  // Verification propulseur
+            echo "Verification de l'integrite des propulseurs."
+            sleep 10
+            echo "Propulseurs intactes"
+          }
       }
     }
   }
