@@ -1,11 +1,19 @@
 pipeline {
     agent any
 
-    environment{
-        MONTH = "{new Date().format('MMMM', TimeZone.getTimeZone('UTC))}"
-        DAY = "{new Date().format('dd', TimeZone.getTimeZone('UTC')) as Integer}"
-    }
     stages {
+        stage ('SETUP'){
+            steps {
+                script {
+                    // Collect month and day 
+                    def now = new Date()
+                    MONTH = "{new Date().format('MMMM', TimeZone.getTimeZone('UTC))}"
+                    DAY = "{new Date().format('dd', TimeZone.getTimeZone('UTC')) as Integer}"
+
+                    echo 'Current Date : ${env.DAY} ${env.MONTH}' 
+                }
+            }
+        }
         stage('MONTHLY GOALS') {
             steps {
                 script {
