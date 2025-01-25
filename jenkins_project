@@ -1,132 +1,61 @@
 pipeline {
     agent any
-
+    parameters {
+        string(name: 'MONTH', defaultValue: 'January', description: 'Choose the current month')
+        booleanParam(name: 'BUY_DIARY', defaultValue: false, description: 'Did you buy a diary?')
+        booleanParam(name: 'QUOTE', defaultValue: false, description: 'Did you write a quote today?')
+    }
     stages {
-        stage ('SETUP'){
+        stage('SETUP') {
             steps {
                 script {
-                    // Get date
-                    def now = new Date()
+                    // Get the current date
+                    def currentDate = new Date()
+                    // Format the date into day and month
+                    def day = currentDate.format('dd') // Get the day of the month
+                    def month = currentDate.format('MMMM') // Get the full name of the month
                     
-                    // Format date as day and month
-                    def DAY = now.format("dd")
-                    def MONTH = now.format("MMMM")
-                                        
-                    echo "Current Date: ${DAY} ${MONTH}"
-
-
-                    env.CURRENT_DAY = DAY.toInteger()
-                    env.CURRENT_MONTH = MONTH.capitalize()
+                    // Print the current date
+                    echo "Current Date: ${day} ${month}"
                 }
             }
         }
-        stage('MONTHLY GOALS') {
+        
+        stage('Check Goals for the day') {
             steps {
                 script {
-                    // Def user_stories within each month
-                    def user_stories = [
-                        "January" : [
-                            "Buy a Diary if it's not already the case.",
-                            "Write about your feelings of the past years.",
-                            "Write about yourself on a daily basis."
-                        ],
-                        "February" : [
-                            "Change the furniture arrangement.",
-                            "Buy and dispose some or new plants.",
-                            "Buy a new and more flexible desk (sit-stand)."
-                        ],
-                        "March" : [
-                            "Exercise more (make a program that you will be able to respect).",
-                            "Eat better (healthy meals, local ingredients, less meat, ...).",
-                            "Have more time for yourself (health care, skin care, ...)."
-                        ],
-                        "April" : [
-                            "Helping an elderly to cross the street.",
-                            "Give clothes to a charity for children.",
-                            "Bring breakfast for colleagues at the office."
-                        ],
-                        "May": [
-                            "Take dance lessons (whatever the dance is, learn it!).",
-                            "Sign up for Marathon (or semi-marathon).",
-                            "Take a trip with someone you never had (friend, family member, partner)."
-                        ],
-                        "June": [
-                            "Visit parent's home.",
-                            "Organise a trip with your friends.",
-                            "3 restaurants with your girlfriend."
-                        ],
-                        "July": [
-                            "Enjoy a Summer festival.",
-                            "Have a party with your relatives.",
-                            "Go to a concert of one of your friend's favorite artists."
-                        ],
-                        "August": [
-                            "Find a hotel near the sea for a week-end.",
-                            "Rent a van in order to go to the destination.",
-                            "Buy camping equipment."
-                        ],
-                        "September": [
-                            "Find a few hiking trails near your place.",
-                            "Find relatives with whom you will go.",
-                            "Choose two hikes you will go on with them."
-                        ],
-                        "October": [
-                            "Learn a new language that you like.",
-                            "Read three books.",
-                            "Learn a manual activity (origami, calligraphy, lock picking)."
-                        ],
-                        "November": [
-                            "Find an instrument that you like.",
-                            "Take classes and lessons to learn better.",
-                            "Record a cover for a song that you like and show it to your relatives."
-                        ],
-                        "December": [
-                            "Create a daily breathing program (meditation).",
-                            "Attend a yoga class.",
-                            "Ask those you love to come take a yoga class with you."
-                        ]
-                    ]
+                    switch (params.MONTH) {
 
-                    // Def Epics of each month
-                    def epics = [
-                        "January": "Write a Diary",
-                        "February": "Redecorate the House to Feel Good",
-                        "March": "Take Care of Yourself",
-                        "April": "Be Kind",
-                        "May": "Do Something You've Never Done Before",
-                        "June": "Spend Time With Yours",
-                        "July": "Go to a Concert and Dance",
-                        "August": "Sleep a Night on the Beach",
-                        "September": "Discover the World",
-                        "October": "Study",
-                        "November": "Learn to Play an Instrument",
-                        "December": "Breathe Consciously",
-                    ]
+                        case 'January':
+                            if (params.BUY_DIARY?.toBoolean()) {
+                                echo "Congratulations! You bought your diary and you're off to a great start!"
+                            } else {
+                                if (day < 5) {
+                                    echo "Don't forget to buy a diary! Starting early will help you achieve your January goal."
+                                } else if (day == 5) {
+                                    echo "It's not too late! Grab a diary today and start your journaling journey."
+                                } else {
+                                    echo "A bit behind, aren't we? To achieve your January goal, you need a diary. Time to get one and get started!"
+                                }
+                            }
 
-                    echo "Goals for ${env.CURRENT_MONTH}: ${user_stories[env.CURRENT_MONTH]}"
-                    echo "Epic for ${env.CURRENT_MONTH}: ${epics[env.CURRENT_MONTH]}"
-                }
-            }
-        }
+                            if (params.QUOTE?.toBoolean() && params.BUY_DIARY?.toBoolean()) {
+                                echo "Great job writing a quote that reflects your mood today! It's a beautiful way to connect with your emotions and express yourself."
+                            } else if (!params.QUOTE?.toBoolean() && params.BUY_DIARY?.toBoolean()) {
+                                echo "Remember to write a quote that matches your mood today! It's a small yet meaningful step to bring clarity to your thoughts and emotions."
+                            } else if (params.QUOTE?.toBoolean() && !params.BUY_DIARY?.toBoolean()) {
+                                echo "Did you write on a random paper? Writing is the most important—don't give up!"
+                            } else {
+                                echo "Can't write without a diary? Buy one and start your journey!"
+                            }
+                            break
 
-        stage ('NOTIFICATION'){
-            steps{
-                script{
-                    
-                    // Determine the User Story to notify
-                    def day = env.CURRENT_DAY
-                    def currentMonth = env.CURRENT_MONTH
-                    def message = ""
-
-                    if (day <= 10) {
-                        message = user_stories[currentMonth][0]
-                    } else if (day <= 20) {
-                        message = user_stories[currentMonth][1]
-                    } else {
-                        message = user_stories[currentMonth][2]
+                        case 'February':
+                            // Similar logic for February, check if the user did the tasks
+                            break
+                        
+                        // Add similar checks for other months as needed.
                     }
-
-                    echo "NOTIFICATION: ${message}"
                 }
             }
         }
