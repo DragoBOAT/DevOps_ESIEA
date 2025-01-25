@@ -1,39 +1,8 @@
 pipeline {
     agent any
 
-    environment {
-        user_stories = [
-            "January" : ["Buy a Diary if it's not already the case.", "Write about your feelings of the past years.", "Write about yourself on a daily basis."],
-            "February" : ["Change the furniture arrangement.", "Buy and dispose some or new plants.", "Buy a new and more flexible desk (sit-stand)."],
-            "March" : ["Exercise more (make a program that you will be able to respect).", "Eat better (healthy meals, local ingredients, less meat, ...).", "Have more time for yourself (health care, skin care, ...)."],
-            "April" : ["Helping an elderly to cross the street.", "Give clothes to a charity for children.", "Bring breakfast for colleagues at the office."],
-            "May": ["Take dance lessons (whatever the dance is, learn it!).", "Sign up for Marathon (or semi-marathon).", "Take a trip with someone you never had (friend, family member, partner)."],
-            "June": ["Visit parent's home.", "Organise a trip with your friends.", "3 restaurants with your girlfriend."],
-            "July": ["Enjoy a Summer festival.", "Have a party with your relatives.", "Go to a concert of one of your friend's favorite artists."],
-            "August": ["Find a hotel near the sea for a week-end.", "Rent a van in order to go to the destination.", "Buy camping equipment."],
-            "September": ["Find a few hiking trails near your place.", "Find relatives with whom you will go.", "Choose two hikes you will go on with them."],
-            "October": ["Learn a new language that you like.", "Read three books.", "Learn a manual activity (origami, calligraphy, lock picking)."],
-            "November": ["Find an instrument that you like.", "Take classes and lessons to learn better.", "Record a cover for a song that you like and show it to your relatives."],
-            "December": ["Create a daily breathing program (meditation).", "Attend a yoga class.", "Ask those you love to come take a yoga class with you."]
-        ]
-        epics = [
-            "January": "Write a Diary",
-            "February": "Redecorate the House to Feel Good",
-            "March": "Take Care of Yourself",
-            "April": "Be Kind",
-            "May": "Do Something You've Never Done Before",
-            "June": "Spend Time With Yours",
-            "July": "Go to a Concert and Dance",
-            "August": "Sleep a Night on the Beach",
-            "September": "Discover the World",
-            "October": "Study",
-            "November": "Learn to Play an Instrument",
-            "December": "Breathe Consciously"
-        ]
-    }
-
     stages {
-        stage('SETUP') {
+        stage ('SETUP'){
             steps {
                 script {
                     // Get date
@@ -45,6 +14,7 @@ pipeline {
                                         
                     echo "Current Date: ${DAY} ${MONTH}"
 
+
                     env.CURRENT_DAY = DAY.toInteger()
                     env.CURRENT_MONTH = MONTH.capitalize()
                 }
@@ -53,24 +23,107 @@ pipeline {
         stage('MONTHLY GOALS') {
             steps {
                 script {
+                    // Def user_stories within each month
+                    def user_stories = [
+                        "January" : [
+                            "Buy a Diary if it's not already the case.",
+                            "Write about your feelings of the past years.",
+                            "Write about yourself on a daily basis."
+                        ],
+                        "February" : [
+                            "Change the furniture arrangement.",
+                            "Buy and dispose some or new plants.",
+                            "Buy a new and more flexible desk (sit-stand)."
+                        ],
+                        "March" : [
+                            "Exercise more (make a program that you will be able to respect).",
+                            "Eat better (healthy meals, local ingredients, less meat, ...).",
+                            "Have more time for yourself (health care, skin care, ...)."
+                        ],
+                        "April" : [
+                            "Helping an elderly to cross the street.",
+                            "Give clothes to a charity for children.",
+                            "Bring breakfast for colleagues at the office."
+                        ],
+                        "May": [
+                            "Take dance lessons (whatever the dance is, learn it!).",
+                            "Sign up for Marathon (or semi-marathon).",
+                            "Take a trip with someone you never had (friend, family member, partner)."
+                        ],
+                        "June": [
+                            "Visit parent's home.",
+                            "Organise a trip with your friends.",
+                            "3 restaurants with your girlfriend."
+                        ],
+                        "July": [
+                            "Enjoy a Summer festival.",
+                            "Have a party with your relatives.",
+                            "Go to a concert of one of your friend's favorite artists."
+                        ],
+                        "August": [
+                            "Find a hotel near the sea for a week-end.",
+                            "Rent a van in order to go to the destination.",
+                            "Buy camping equipment."
+                        ],
+                        "September": [
+                            "Find a few hiking trails near your place.",
+                            "Find relatives with whom you will go.",
+                            "Choose two hikes you will go on with them."
+                        ],
+                        "October": [
+                            "Learn a new language that you like.",
+                            "Read three books.",
+                            "Learn a manual activity (origami, calligraphy, lock picking)."
+                        ],
+                        "November": [
+                            "Find an instrument that you like.",
+                            "Take classes and lessons to learn better.",
+                            "Record a cover for a song that you like and show it to your relatives."
+                        ],
+                        "December": [
+                            "Create a daily breathing program (meditation).",
+                            "Attend a yoga class.",
+                            "Ask those you love to come take a yoga class with you."
+                        ]
+                    ]
+
+                    // Def Epics of each month
+                    def epics = [
+                        "January": "Write a Diary",
+                        "February": "Redecorate the House to Feel Good",
+                        "March": "Take Care of Yourself",
+                        "April": "Be Kind",
+                        "May": "Do Something You've Never Done Before",
+                        "June": "Spend Time With Yours",
+                        "July": "Go to a Concert and Dance",
+                        "August": "Sleep a Night on the Beach",
+                        "September": "Discover the World",
+                        "October": "Study",
+                        "November": "Learn to Play an Instrument",
+                        "December": "Breathe Consciously",
+                    ]
+
                     echo "Goals for ${env.CURRENT_MONTH}: ${user_stories[env.CURRENT_MONTH]}"
                     echo "Epic for ${env.CURRENT_MONTH}: ${epics[env.CURRENT_MONTH]}"
                 }
             }
         }
 
-        stage('NOTIFICATION') {
-            steps {
-                script {
+        stage ('NOTIFICATION'){
+            steps{
+                script{
+                    
                     // Determine the User Story to notify
+                    def day = env.CURRENT_DAY
+                    def currentMonth = env.CURRENT_MONTH
                     def message = ""
 
-                    if (env.CURRENT_DAY <= 10) {
-                        message = user_stories[env.CURRENT_MONTH][0]
-                    } else if (env.CURRENT_DAY <= 20) {
-                        message = user_stories[env.CURRENT_MONTH][1]
+                    if (day <= 10) {
+                        message = user_stories[currentMonth][0]
+                    } else if (day <= 20) {
+                        message = user_stories[currentMonth][1]
                     } else {
-                        message = user_stories[env.CURRENT_MONTH][2]
+                        message = user_stories[currentMonth][2]
                     }
 
                     echo "NOTIFICATION: ${message}"
