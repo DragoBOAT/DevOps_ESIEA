@@ -5,12 +5,14 @@ pipeline {
         stage ('SETUP'){
             steps {
                 script {
-                    // Collect month and day 
-                    def now = new Date()
-                    MONTH = new Date().format('MMMM', TimeZone.getTimeZone('UTC'))
-                    DAY = new Date().format('dd', TimeZone.getTimeZone('UTC')) as Integer
+                    // Get date
+                    def currentDate = new Date()
                     
-                    echo 'Current Date : ${DAY} ${MONTH}'
+                    // Format date as day and month
+                    def day = currentDate.format('dd') // Get the day of the month
+                    def month = currentDate.format('MMMM') // Get the full name of the month
+                    
+                    echo "Current Date: ${day} ${month}"
                 }
             }
         }
@@ -95,64 +97,8 @@ pipeline {
                         "November": "Learn to Play an Instrument",
                         "December": "Breathe Consciously",
                     ]
-
-                    def currentGoals = user_stories["${MONTH}"]
-                    def currentEpic = epics["${MONTH}"]
-                    def selectedGoal = ""
-
-                    // Objectives based on the date 
-                    // ISSUE MIGHT BE THERE
-                    if ("${DAY}" >= 1 && "${DAY}" <=10){
-                        echo "Between 1 and 10 ${currentGoals[0]}"
-                        //selectedGoal = currentGoals[0]
-                    } else if ("${DAY}" >=11 && "${DAY}" <= 20){
-                        echo "Between 11 and 20 ${currentGoals[1]}"
-                        //selectedGoal = currentGoals[1]
-                    } else if ("${DAY}" >= 21){
-                        echo "Over 21 ${currentGoals[2]}"
-                        //selectedGoal = currentGoals[2]
-                    }
-                    
-                    // Details 
-                    echo "Current Month : ${MONTH}"
-                    echo "Current Day : ${DAY}"
-                    echo "Short Goal for this period : ${selectedGoal}"
-                    echo "Final Goal of the Month : ${currentEpic}"
-
-                    // Save the goal for next steps
-                    SELECTED_GOAL = selectedGoal
-                    MONTHLY_EPIC = currentEpic
-                    
                 }
             }
         }
-
-        stage('NOTIFICATION') {
-            steps {
-                script {
-                    echo "Todays Reminder : ${SELECTED_GOAL}"
-                }
-            }
-        }
-
-        stage('MONTHLY SUMMARY') {
-            when {
-                expression {
-                    return DAY.toInteger() >= 25
-                }
-            }
-            steps {
-                script {
-                    echo "We're ending ${MONTH}. Quick reminder of your Month Final Goal : ${MONTHLY_EPIC} !"
-                }
-            }
-        }
- 
-
-        stage ('SUCCESSFUL'){
-            steps {
-                echo "Pipeline ended for the ${MONTH}." 
-            }
-        }       
-    }   
+    }
 }
