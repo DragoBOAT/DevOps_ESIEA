@@ -6,20 +6,24 @@ pipeline {
             steps {
                 script {
                     // Get date
-                    def currentDate = new Date()
+                    def now = new Date()
                     
                     // Format date as day and month
-                    def day = currentDate.format('dd') // Get the day of the month
-                    def month = currentDate.format('MMMM') // Get the full name of the month
-                    
-                    echo "Current Date: ${day} ${month}"
+                    def DAY = now.format("dd")
+                    def MONTH = now.format("MMMM")
+                                        
+                    echo "Current Date: ${DAY} ${MONTH}"
+
+
+                    env.CURRENT_DAY = DAY as Integer
+                    env.CURRENT_MONTH = MONTH
                 }
             }
         }
         stage('MONTHLY GOALS') {
             steps {
                 script {
-                    // Def goals for each month
+                    // Def user_stories within each month
                     def user_stories = [
                         "January" : [
                             "Buy a Diary if it's not already the case.",
@@ -83,6 +87,7 @@ pipeline {
                         ]
                     ]
 
+                    // Def Epics of each month
                     def epics = [
                         "January": "Write a Diary",
                         "February": "Redecorate the House to Feel Good",
@@ -97,6 +102,30 @@ pipeline {
                         "November": "Learn to Play an Instrument",
                         "December": "Breathe Consciously",
                     ]
+
+                    echo "Goals for ${env.CURRENT_MONTH}: ${user_stories[env.CURRENT_MONTH]}"
+                    echo "Epic for ${env.CURRENT_MONTH}: ${epics[env.CURRENT_MONTH]}"
+                }
+            }
+        }
+
+        stage ('NOTIFICATION'){
+            steps{
+                script{
+                    // Determine the User Story to notify
+                    def day = env.CURRENT_DAY
+                    def currentMonth = env.CURRENT_MONTH
+                    def message = ""
+
+                    if (day <= 10) {
+                        message = user_stories[currentMonth][0]
+                    } else if (day <= 20) {
+                        message = user_stories[currentMonth][1]
+                    } else {
+                        message = user_stories[currentMonth][2]
+                    }
+
+                    echo "NOTIFICATION: ${message}"
                 }
             }
         }
